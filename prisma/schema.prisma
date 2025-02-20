@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GoFormSection {
+  id         Int     @id @default(autoincrement())
+  title      String
+  buttonText String
+  buttonSrc  String
+  iconClass  String
+  action     Boolean @default(false)
+}
+
+model WhyUsFeatures {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  image       String
+}
+
+model WhyUsSection {
+  id     Int     @id @default(autoincrement())
+  title  String
+  action Boolean @default(false)
+}
+
+model about_page_section {
+  id          Int     @id @default(autoincrement())
+  title       String
+  action      Boolean @default(true)
+  imgSrc      String
+  description String?
+}
+
+model books {
+  id       Int      @id @default(autoincrement())
+  type     String
+  data     Json
+  price    Decimal
+  check    Boolean  @default(false)
+  bookDate DateTime @default(now())
+}
+
+model company_details {
+  id               Int     @id @default(autoincrement())
+  company_logo_src String?
+  companyName      String
+  companyWebLogo   String?
+  fullName         String?
+}
+
+model contact_page {
+  id          Int     @id @default(autoincrement())
+  header      String
+  description String?
+  action      Boolean @default(true)
+}
+
+model contact_page_social_media {
+  id            Int          @id @default(autoincrement())
+  socialMediaId Int
+  social_links  social_links @relation(fields: [socialMediaId], references: [id], onDelete: Cascade)
+}
+
+model document_selection {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+}
+
+model footer {
+  id           Int     @id @default(autoincrement())
+  heading      String?
+  logoImg      String?
+  copyright    String?
+  search_tools String?
+}
+
+model footer_social_media {
+  id            Int          @id @default(autoincrement())
+  socialMediaId Int
+  social_links  social_links @relation(fields: [socialMediaId], references: [id], onDelete: Cascade)
+}
+
+model forms {
+  id    Int    @id @default(autoincrement())
+  type  String
+  data  Json
+  price Json
+  title String
+}
+
+model forms_default {
+  id        Int    @id @default(autoincrement())
+  modelText String
+  wpNumber  String
+
+  @@map("forms-default")
+}
+
+model hero_section {
+  id            Int     @id @default(autoincrement())
+  subtitle      String
+  backgroundImg String
+  title         String
+  description   String
+  buttonText    String
+  buttonSrc     String
+  action        Boolean @default(false)
+}
+
+model hero_section_media {
+  id            Int          @id @default(autoincrement())
+  text          String
+  socialMediaId Int
+  social_links  social_links @relation(fields: [socialMediaId], references: [id], onDelete: Cascade)
+}
+
+model operation_section {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  action      Boolean @default(false)
+}
+
+model operations {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  iconClass   String
+  link        String
+  place       Int
+  action      Boolean
+}
+
+model othwe_work_section {
+  id            Int     @id @default(autoincrement())
+  backgroundImg String
+  action        Boolean @default(true)
+  overlay       Json
+}
+
+model price_option {
+  id        Int     @id @default(autoincrement())
+  buttonSrc String
+  iconClass String
+  title     String
+  action    Boolean @default(true)
+}
+
+model profile {
+  id           Int  @id @default(autoincrement())
+  presentation Json
+}
+
+model purpose_section {
+  id          Int     @id @default(autoincrement())
+  title       String
+  action      Boolean @default(true)
+  description String?
+  catalog     Json
+}
+
+model social_links {
+  id                        Int                         @id @default(autoincrement())
+  platform                  String
+  iconClass                 String
+  link                      String
+  contact_page_social_media contact_page_social_media[]
+  footer_social_media       footer_social_media[]
+  hero_section_media        hero_section_media[]
+  social_section_media      social_section_media[]
+}
+
+model social_section {
+  id     Int     @id @default(autoincrement())
+  title  String
+  action Boolean @default(false)
+}
+
+model social_section_media {
+  id            Int          @id @default(autoincrement())
+  socialMediaId Int
+  social_links  social_links @relation(fields: [socialMediaId], references: [id], onDelete: Cascade)
+}
