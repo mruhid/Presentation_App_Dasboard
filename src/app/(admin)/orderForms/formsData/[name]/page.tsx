@@ -1,14 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FormsDataFeed from "./FormsDataFeed";
-import { Metadata } from "next";
 
 interface PageProps {
-    params: { name?: string | undefined };  // Make `name` optional to avoid runtime errors
+    params: { name: string };  // Ensure `name` is required
 }
-export const metadata: Metadata = { title: "Order Forms" }
 
-export default async function Page({ params }: PageProps) {
-    const name = params?.name || "Unknown"; // Handle undefined case
+
+export default function Page({ params }: PageProps) {
+    const name = params?.name ?? "Unknown"; // Use optional chaining safely
 
     return (
         <div className="w-full min-w-0 space-y-5 mx-auto text-center">
