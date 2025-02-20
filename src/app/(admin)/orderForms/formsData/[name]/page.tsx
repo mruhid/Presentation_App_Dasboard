@@ -3,11 +3,13 @@ import FormsDataFeed from "./FormsDataFeed";
 import { Metadata } from "next";
 
 interface PageProps {
-    params: { name: string };
+    params: { name?: string };  // Make `name` optional to avoid runtime errors
 }
 export const metadata: Metadata = { title: "Order Forms" }
 
-export default function Page({ params: { name } }: PageProps) {
+export default async function Page({ params }: PageProps) {
+    const name = params?.name || "Unknown"; // Handle undefined case
+
     return (
         <div className="w-full min-w-0 space-y-5 mx-auto text-center">
             <h1 className="text-2xl font-bold">Order Forms Data</h1>
