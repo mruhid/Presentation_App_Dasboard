@@ -3,7 +3,7 @@ import FormsDataFeed from "./FormsDataFeed";
 import { Metadata } from "next";
 
 interface PageProps {
-    params: { name?: string };  // Make `name` optional to avoid runtime errors
+    params: { name?: string | undefined };  // Make `name` optional to avoid runtime errors
 }
 export const metadata: Metadata = { title: "Order Forms" }
 
