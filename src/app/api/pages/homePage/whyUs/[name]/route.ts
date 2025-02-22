@@ -1,20 +1,23 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params: { name } }: { params: { name: string } }
-) {
+type Props = {
+  params: Promise<{
+    name: string;
+  }>;
+};
+export async function GET(req: NextRequest, props: Props) {
+  const params = await props.params;
   try {
     // Check if the model exists in Prisma
-    if (!prisma[name]) {
+    if (!prisma[params.name]) {
       return NextResponse.json(
         { error: "Invalid model name" },
         { status: 400 }
       );
     }
     let data;
-    if (name == "whyUsFeatures") {
+    if (params.name == "whyUsFeatures") {
       data = await prisma.whyUsFeatures.findMany({
         select: {
           id: true,
@@ -24,7 +27,7 @@ export async function GET(
         },
       });
     } else {
-      data = await prisma[name].findMany();
+      data = await prisma[params.name].findMany();
     }
 
     return NextResponse.json(data);

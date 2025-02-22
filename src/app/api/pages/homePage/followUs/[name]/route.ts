@@ -1,13 +1,16 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params: { name } }: { params: { name: string } }
-) {
+type Props = {
+  params: Promise<{
+    name: string;
+  }>;
+};
+export async function GET(req: NextRequest, props: Props) {
+  const params = await props.params;
   try {
     // Check if the model exists in Prisma
-    if (!prisma[name]) {
+    if (!prisma[params.name]) {
       return NextResponse.json(
         { error: "Invalid model name" },
         { status: 400 }
@@ -16,7 +19,7 @@ export async function GET(
 
     let data;
 
-    if (name === "social_section_media") {
+    if (params.name === "social_section_media") {
       // Fetch data with related social media information
       data = await prisma.social_section_media.findMany({
         include: {
@@ -25,7 +28,7 @@ export async function GET(
       });
     } else {
       // Generic fetch for other models
-      data = await prisma[name].findMany();
+      data = await prisma[params.name].findMany();
     }
 
     return NextResponse.json(data);
