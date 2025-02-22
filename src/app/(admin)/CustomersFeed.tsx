@@ -74,7 +74,7 @@ export default function CustomersFeed() {
         <h1 className="font-semibold ">Total</h1>
         <div className="flex px-4 py-2 justify-center gap-8 items-center">
           <div><DeleteAllDialog /></div>
-          <h1 className="text-primary font-bold text-xl">${totalPrice[0]}</h1>
+          <h1 className="text-primary font-bold text-xl">${totalPrice}</h1>
         </div>
 
       </div>
