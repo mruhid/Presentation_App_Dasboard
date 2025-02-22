@@ -3,11 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params: { name } }: { params: { name: string } }
+  context: { params: { name: string } }
 ) {
+  const { name } = context.params;
+
   try {
-    // Check if the model exists in Prisma
-    if (!prisma[name]) {
+    if (!(name in prisma)) {
       return NextResponse.json(
         { error: "Invalid model name" },
         { status: 400 }
@@ -20,12 +21,12 @@ export async function GET(
       // Fetch data with related social media information
       data = await prisma.footer_social_media.findMany({
         include: {
-          social_links: true, // Assuming the relation is named `socialMedia`
+          social_links: true, // Assuming the relation is named `social_links`
         },
       });
     } else {
       // Generic fetch for other models
-      data = await prisma[name].findMany();
+      data = await prisma.footer.findMany();
     }
 
     return NextResponse.json(data);
