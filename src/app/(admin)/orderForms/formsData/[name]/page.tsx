@@ -1,13 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FormsDataFeed from "./FormsDataFeed";
 
-interface PageProps {
-    params: { name: string };  // Ensure `name` is required
-}
 
 
-export default function Page({ params }: PageProps) {
-    const name = params?.name ?? "Unknown"; // Use optional chaining safely
+
+export default async function Page({ params }: { params: Promise<{ name: string }> }) {
+    const { name } = await params
 
     return (
         <div className="w-full min-w-0 space-y-5 mx-auto text-center">
