@@ -124,7 +124,7 @@ export default function CustomersFeed() {
       {/* Mobile Total */}
 
 
-      {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
+      {hasNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </PaginationContainer>
 
   );
