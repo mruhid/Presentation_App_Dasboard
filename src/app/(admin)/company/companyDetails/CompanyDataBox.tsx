@@ -27,6 +27,7 @@ export function CompanyDataBox() {
             <div className="mx-auto text-destructive p-5 text-center">
                 <p>Error loading company details.</p>
             </div>
+
         );
     }
 
