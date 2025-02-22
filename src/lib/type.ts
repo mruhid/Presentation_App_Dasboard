@@ -1,11 +1,15 @@
 export interface BooksProps {
   id: number;
-  data: object;
+  data: {
+    fullName: string;
+    // Add other properties if necessary
+  };
   type: string;
   price: number;
   check: boolean;
   bookDate: string;
 }
+
 export interface CompanyDetailsProps {
   id: number;
   company_logo_src: string | null;
