@@ -1,14 +1,11 @@
 import { Metadata } from "next";
 import FormsPriceFeed from "./FormPriceFeed";
 
-interface PageProps {
-    params: { name?: string };  // Make `name` optional to avoid runtime errors
-}
 
 export const metadata: Metadata = { title: "Form Price" };
 
-export default async function Page({ params }: PageProps) {
-    const name = params?.name || "Unknown"; // Handle undefined case
+export default async function Page({ params }: { params: Promise<{ name: string }> }) {
+    const { name } = await params
 
     return (
         <div className="w-full max-w-[700px] min-w-0 space-y-5 mx-auto text-center">
