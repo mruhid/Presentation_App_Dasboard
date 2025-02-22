@@ -60,9 +60,9 @@ export default function CustomersFeed() {
   if (status === "success" && !customers.length && !hasNextPage) {
     return <p className="text-center text-muted-foreground">No customers found!</p>;
   }
-  const totalPrice = data?.pages.flatMap((page) => (
-    parseFloat(page.totalPrice.toString())
-  )) || [];
+  const totalPrice = data?.pages
+    .flatMap((page) => (page.totalPrice !== null ? parseFloat(page.totalPrice.toString()) : 0))
+    .reduce((acc, price) => acc + price, 0);
   return (
     <PaginationContainer
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
