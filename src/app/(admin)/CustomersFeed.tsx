@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, } from "@tanstack/react-query";
 import kyInstance from "@/lib/ky";
 import { Loader2 } from "lucide-react";
 import PaginationContainer from "@/components/PaginationContainer";
@@ -13,6 +13,7 @@ import StatusButton from "@/components/books/customerStatus/StatusButton";
 import { formatRelativeDate } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import DeleteAllDialog from "@/components/books/deleteAll/DeleteAllDialog";
+import { useEffect, useState } from "react";
 
 
 
@@ -23,14 +24,10 @@ type CustomersPage = {
 };
 
 export default function CustomersFeed() {
-  const {
-    data,
-    fetchNextPage,
-    isFetching,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
+
+  const [details, setDetails] = useState<any>({}); // Add state to store fetched data
+
+  const { data, fetchNextPage, isFetching, hasNextPage, status } = useInfiniteQuery({
     queryKey: ["customers-feed"],
     queryFn: ({ pageParam }) =>
       kyInstance
@@ -42,6 +39,13 @@ export default function CustomersFeed() {
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextPaginationCursor,
   });
+
+  useEffect(() => {
+    if (data && !Object.keys(details).length) {
+      setDetails(data.pages[0]); // Set the first page of data
+    }
+  }, [data, details]);
+
 
   const customers = data?.pages.flatMap((page) => page.customers) || [];
 
