@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery, } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import kyInstance from "@/lib/ky";
 import { Loader2 } from "lucide-react";
 import PaginationContainer from "@/components/PaginationContainer";
@@ -13,7 +13,6 @@ import StatusButton from "@/components/books/customerStatus/StatusButton";
 import { formatRelativeDate } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import DeleteAllDialog from "@/components/books/deleteAll/DeleteAllDialog";
-import { useEffect, useState } from "react";
 
 
 
@@ -24,10 +23,14 @@ type CustomersPage = {
 };
 
 export default function CustomersFeed() {
-
-  const [details, setDetails] = useState<any>({}); // Add state to store fetched data
-
-  const { data, fetchNextPage, isFetching, hasNextPage, status } = useInfiniteQuery({
+  const {
+    data,
+    fetchNextPage,
+    isFetching,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
     queryKey: ["customers-feed"],
     queryFn: ({ pageParam }) =>
       kyInstance
@@ -39,13 +42,6 @@ export default function CustomersFeed() {
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextPaginationCursor,
   });
-
-  useEffect(() => {
-    if (data && !Object.keys(details).length) {
-      setDetails(data.pages[0]); // Set the first page of data
-    }
-  }, [data, details]);
-
 
   const customers = data?.pages.flatMap((page) => page.customers) || [];
 
@@ -64,9 +60,7 @@ export default function CustomersFeed() {
   if (status === "success" && !customers.length && !hasNextPage) {
     return <p className="text-center text-muted-foreground">No customers found!</p>;
   }
-  const totalPrice = data?.pages
-    .flatMap((page) => (page.totalPrice !== null ? parseFloat(page.totalPrice.toString()) : 0))
-    .reduce((acc, price) => acc + price, 0);
+
   return (
     <PaginationContainer
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
@@ -78,7 +72,6 @@ export default function CustomersFeed() {
         <h1 className="font-semibold ">Total</h1>
         <div className="flex px-4 py-2 justify-center gap-8 items-center">
           <div><DeleteAllDialog /></div>
-          <h1 className="text-primary font-bold text-xl">${totalPrice}</h1>
         </div>
 
       </div>
@@ -124,7 +117,7 @@ export default function CustomersFeed() {
       {/* Mobile Total */}
 
 
-      {hasNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
+      {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </PaginationContainer>
 
   );
