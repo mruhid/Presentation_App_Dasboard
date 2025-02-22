@@ -1,14 +1,15 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-
-export async function GET(
-  req: NextRequest,
-  context: { params: { name: string } }
-) {
-  const { name } = context.params;
+type Props = {
+  params: Promise<{
+    name: string;
+  }>;
+};
+export async function GET(req: NextRequest, props: Props) {
+  const params = await props.params;
 
   try {
-    if (!(name in prisma)) {
+    if (!(params.name in prisma)) {
       return NextResponse.json(
         { error: "Invalid model name" },
         { status: 400 }
@@ -17,7 +18,7 @@ export async function GET(
 
     let data;
 
-    if (name === "footer_social_media") {
+    if (params.name === "footer_social_media") {
       // Fetch data with related social media information
       data = await prisma.footer_social_media.findMany({
         include: {

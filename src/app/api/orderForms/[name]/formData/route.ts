@@ -1,13 +1,19 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params: { name } }: { params: { name: string } }
-) {
+type Props = {
+  params: Promise<{
+    name: string;
+  }>;
+};
+export async function GET(req: NextRequest, props: Props) {
+  const params = await props.params;
   try {
-    // Validate if 'name' exists and is not empty
-    if (!name || typeof name !== "string" || name.trim() === "") {
+    if (
+      !params.name ||
+      typeof params.name !== "string" ||
+      params.name.trim() === ""
+    ) {
       return NextResponse.json(
         { error: "Invalid data type" }, // Return error if name is missing
         { status: 400 }
@@ -15,7 +21,7 @@ export async function GET(
     }
 
     const data = await prisma.forms.findFirst({
-      where: { type: name },
+      where: { type: params.name },
       select: { id: true, data: true, title: true, type: true },
     });
 
