@@ -1,5 +1,9 @@
 import { useToast } from "@/hooks/use-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  QueryFilters,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { updateCompanyDetails } from "./action"; // Replace with your actual mutation function
 import { CompanyDetailsProps } from "@/lib/type";
 
@@ -11,7 +15,7 @@ export function useUpdateAdminDataMutation() {
     mutationFn: updateCompanyDetails, // Function to update company details
 
     onMutate: async ({ data }) => {
-      const queryFilter = { queryKey: ["admin-data-for-edit"] };
+      const queryFilter: QueryFilters = { queryKey: ["admin-data-for-edit"] };
 
       // Cancel ongoing queries for admin data
       await queryClient.cancelQueries(queryFilter);
@@ -57,7 +61,6 @@ export function useUpdateAdminDataMutation() {
     },
 
     onSettled: () => {
-      // After the mutation settles, invalidate the query to refetch the data from the server
       queryClient.invalidateQueries(["admin-data-for-edit"]);
     },
   });
