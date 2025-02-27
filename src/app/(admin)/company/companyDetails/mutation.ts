@@ -11,7 +11,7 @@ export function useUpdateAdminDataMutation() {
     mutationFn: updateCompanyDetails, // Function to update company details
 
     onMutate: async ({ data }) => {
-      const queryFilter = { queryKey: ["admin-data"] };
+      const queryFilter = { queryKey: ["admin-data-for-edit"] };
 
       // Cancel ongoing queries for admin data
       await queryClient.cancelQueries(queryFilter);
@@ -41,7 +41,7 @@ export function useUpdateAdminDataMutation() {
 
       // Rollback the cache to previous data if an error occurs
       if (context?.previousData) {
-        queryClient.setQueryData("admin-data", context.previousData);
+        queryClient.setQueryData("admin-data-for-edit", context.previousData);
       }
 
       toast({
@@ -58,7 +58,7 @@ export function useUpdateAdminDataMutation() {
 
     onSettled: () => {
       // After the mutation settles, invalidate the query to refetch the data from the server
-      queryClient.invalidateQueries(["admin-data"]);
+      queryClient.invalidateQueries(["admin-data-for-edit"]);
     },
   });
 
