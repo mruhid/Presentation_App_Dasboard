@@ -9,17 +9,17 @@ import InputElements from "./InputElements";
 export default function FooterSideFeed({ name }: { name: string }) {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        FooterSocialMediaProps | FooterTextProps
+        FooterSocialMediaProps[] | FooterTextProps[]
     >({
         queryKey: [`${name}-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/footerSide/${name}`)
-                .json<FooterSocialMediaProps | FooterTextProps>(),
+                .json<FooterSocialMediaProps[] | FooterTextProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

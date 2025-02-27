@@ -9,17 +9,17 @@ import InputElements from "./InputElemenrs";
 export default function PurposeFeed() {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        PurposeSectionProps
+        PurposeSectionProps[]
     >({
         queryKey: [`purpose-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/aboutPage/purpose`)
-                .json<PurposeSectionProps>(),
+                .json<PurposeSectionProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

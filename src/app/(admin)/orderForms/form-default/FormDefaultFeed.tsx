@@ -9,17 +9,17 @@ import InputElements from "./InputElements";
 export default function FormDefaultFeed() {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        OrderFormsDefaultProps
+        OrderFormsDefaultProps[]
     >({
         queryKey: [`form-default-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/orderForms/formDefault`)
-                .json<OrderFormsDefaultProps>(),
+                .json<OrderFormsDefaultProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

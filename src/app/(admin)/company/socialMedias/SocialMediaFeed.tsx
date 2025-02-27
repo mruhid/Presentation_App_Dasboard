@@ -12,25 +12,26 @@ export default function SocialMediaFeed() {
     const { data, isFetching, isError, isLoading } = useQuery({
         queryKey: ["social-medias"],
         queryFn: () => kyInstance.get("/api/companyDetails/socialMedias")
-            .json<SocialMediaProps>(),
+            .json<SocialMediaProps[]>(),
         staleTime: Infinity,
 
     })
 
-    if (isError) {
-        toast({
-            title: "Error",
-            description: "Something went wrong",
-            variant: "destructive"
-        });
-        return
-    }
+
     if (isLoading || isFetching) {
         return (
             <div className="mx-auto p-5 text-center">
                 <Loader2 className="mx-auto my-3 animate-spin" />
             </div>
         );
+    }
+    if (isError || !data) {
+        toast({
+            title: "Error",
+            description: "Something went wrong",
+            variant: "destructive"
+        });
+        return
     }
 
 

@@ -9,17 +9,17 @@ import InputElements from "./inputElements";
 export default function AboutUsFeed() {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        AboutUsSectionProps
+        AboutUsSectionProps[]
     >({
         queryKey: [`about-us-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/aboutPage/aboutSection/`)
-                .json<AboutUsSectionProps>(),
+                .json<AboutUsSectionProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

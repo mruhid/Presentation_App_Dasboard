@@ -19,7 +19,7 @@ export default function HeroFeed({ name }: { name: string }) {
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

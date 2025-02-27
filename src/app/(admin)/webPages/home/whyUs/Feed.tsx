@@ -9,17 +9,17 @@ import InputElements from "./InputElements";
 export default function Feed({ name }: { name: string }) {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        WhyUsProps | WhyUsFeaturesProps
+        WhyUsProps | WhyUsFeaturesProps[]
     >({
         queryKey: [`${name}`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/homePage/whyUs/${name}`)
-                .json<WhyUsProps | WhyUsFeaturesProps>(),
+                .json<WhyUsProps | WhyUsFeaturesProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

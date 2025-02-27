@@ -9,17 +9,17 @@ import InputElements from "./InputElements";
 export default function ContactFeed({ name }: { name: string }) {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        ContactTitleProps | ContactPlatformsProps
+        ContactTitleProps | ContactPlatformsProps[]
     >({
         queryKey: [`${name}-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/contactPage/${name}`)
-                .json<ContactPlatformsProps | ContactTitleProps>(),
+                .json<ContactPlatformsProps[] | ContactTitleProps>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

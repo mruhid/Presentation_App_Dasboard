@@ -8,17 +8,17 @@ import InputElements from "./InputElements";
 export default function FormsPriceFeed({ name, }: { name: string }) {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        OrderFormsPriceProps
+        OrderFormsPriceProps[]
     >({
         queryKey: [`${name}-forms`, 'orderPrice-feed'],
         queryFn: () =>
             kyInstance
                 .get(`/api/orderForms/${name}/orderPrice`)
-                .json<OrderFormsPriceProps>(),
+                .json<OrderFormsPriceProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

@@ -19,7 +19,7 @@ export default function FormsDataFeed({ name, tabName }: { name: string, tabName
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

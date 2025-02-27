@@ -9,17 +9,17 @@ import InputElements from "./InputElements";
 export default function FollowUsFeed({ name }: { name: string }) {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        FollowUsProps | FollowUsMediaProps
+        FollowUsProps | FollowUsMediaProps[]
     >({
         queryKey: [`${name}`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/homePage/followUs/${name}`)
-                .json<FollowUsMediaProps | FollowUsProps>(),
+                .json<FollowUsMediaProps[] | FollowUsProps>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

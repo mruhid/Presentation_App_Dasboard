@@ -9,17 +9,17 @@ import InputElements from "./InputElements";
 export default function GoFormFeed() {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        GoFormSectionProps
+        GoFormSectionProps[]
     >({
         queryKey: [`go-form-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/homePage/goForm/`)
-                .json<GoFormSectionProps>(),
+                .json<GoFormSectionProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }

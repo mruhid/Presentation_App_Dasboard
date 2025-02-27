@@ -9,17 +9,17 @@ import InputElements from "./InputElemenrs";
 export default function OtherWorksFeed() {
 
     const { data, isFetching, isError, isLoading } = useQuery<
-        OtherWorksSectionProps
+        OtherWorksSectionProps[]
     >({
         queryKey: [`other-works-feed`],
         queryFn: () =>
             kyInstance
                 .get(`/api/pages/aboutPage/otherWorks`)
-                .json<OtherWorksSectionProps>(),
+                .json<OtherWorksSectionProps[]>(),
         staleTime: Infinity,
     });
 
-    if (isError) {
+    if (isError || !data) {
 
         return
     }
